@@ -21,3 +21,22 @@ stage('Release') {
             }
     }
 }
+} 
+   stages {
+        stage('Install Newman') {
+            steps {
+                sh 'npm install -g newman newman-reporter-htmlextra'
+            }
+        }
+        stage('Run API Tests') {
+            steps {
+                sh 'newman run Practise_APIs_Postman_Collection.json -r htmlextra'
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'newman/*.html', fingerprint: true
+        }
+    }
+}
